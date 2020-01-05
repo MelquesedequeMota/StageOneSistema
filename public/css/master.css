@@ -1,0 +1,62 @@
+.inicio-conteudo{
+
+	margin-top: 12%;
+}
+
+.comparativoVendas{
+
+	width: 100%;
+	height: 15%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+
+}
+
+.boxVenda{
+	border-radius: 3rem;
+	border: solid 3px gray;
+	display: table;
+}
+
+.valorVenda{
+
+	text-align: center;
+	font-size: 3em;
+	font-weight: 600;
+}
+
+.periodoVenda{
+
+	text-align: center;
+	font-size: 1.5em;
+	margin: 0 auto;
+}
+
+.boxContent{
+	display: table-cell;
+	vertical-align: middle;
+	padding: 30 20;
+}
+
+.suasVendas{
+
+	text-align: center;
+	font-size: 2em;
+	font-weight: 600;
+}
+
+.graficoVendas{
+
+	width: 100%;
+	height: 40%;
+	background-color: red
+}
+
+.produtosEstoque{
+
+	width: 100%;
+	height: 30%;
+	background-color: green
+}
+
