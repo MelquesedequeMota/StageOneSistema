@@ -9,25 +9,24 @@
 <script type='text/javascript'> alert('Pessoa Cadastrado com Sucesso!'); </script>
 @endif
 
-    <form method="get" action="{{route('criarpessoa')}}" onsubmit="validarCampo(this); return false;">
-        <h3>Obrigatório(*)</h3>
-        Usuário<input type='radio' name='tipoconta' value='0'>
-        Fornecedor<input type='radio' name='tipoconta' value='2'><br>
-        Nome:</div><input type="text" name="nomepessoa" required>(*)<br>
+    <form method="get" action="{{route('criarpessoa')}}" onsubmit="return false;">
+        <h3>Obrigatório(*)</h3><br>
+        Nome:</div><input type="text" name="nomepessoa" id='nomepessoa' required>(*)<br>
         CPF<input type='radio' name='cpfcnpj' value='CPF' onchange='cpf()'>
         CNPJ<input type='radio' name='cpfcnpj' value='CNPJ' onchange='cnpj()'><br>
         <div id='inputcpfcnpj'></div>
-        Email: <input type="text" name="emailpessoa" required>(*)<br>
+        Email: <input type="text" name="emailpessoa" id='emailpessoa' required>(*)<br>
         Número de Telefone 1: <input type="text" name="fonepessoa" id='fonepessoa' required>(*)<br>
         Número de Telefone 2: <input type="text" name="fone2pessoa" id='fone2pessoa'><br>
         Número de Telefone 3: <input type="text" name="fone3pessoa" id='fone3pessoa'><br>
         Número de Telefone 4: <input type="text" name="fone4pessoa" id='fone4pessoa'><br>
         CEP: <input type="text" name="ceppessoa" id='ceppessoa' required>(*)<br>
-        Endereço:<input type="text" name="enderecopessoa" required>(*)<br>
-        Observações: <input type="text" name="obspessoa" required>(*)<br>
-        Senha: <input type="password" name="senhapessoa" required>(*)<br>
-        Confirmar Senha: <input type="password" name="confsenhapessoa" required>(*)<br>
-        <input type="submit" value="Confirmar Cadastro" name='criar'>
+        Endereço:<input type="text" name="enderecopessoa" id='enderecopessoa' required>(*)<br>
+        Observações: <input type="text" name="obspessoa" id='obspessoa' required>(*)<br>
+        Senha: <input type="password" name="senhapessoa" id='senhapessoa' required>(*)<br>
+        Confirmar Senha: <input type="password" name="confsenhapessoa" id='confsenhapessoa' required>(*)
+        <div id='senhas'></div><br>
+        <input type="button" value="Confirmar Cadastro" onclick="validarCampo()" name='criar'>
     </form>
 </body>
 </html>
@@ -84,43 +83,60 @@
     function validarCampo(){
         var cont = 0;
 
-        if(document.getElementById('inputCPF') || document.getElementById('inputCNPJ')){
-            cont++;
-        }else{
+        if(!document.getElementById('inputCPF') && !document.getElementById('inputCNPJ')){
+
             document.getElementById('inputcpfcnpj').innerHTML = "<h5 style='color:red;''>É obrigatório CPF ou CNPJ</h5>";
+        
         }
 
-        if(document.getElementById('fonepessoa')){
+        if(document.getElementById('inputCNPJ')){
+            if(document.getElementById('inputCNPJ').value != ''){
+                cont++;
+            }else{
+                document.getElementById('inputcpfcnpj').innerHTML = "<h5 style='color:red;''>O campo está vazio</h5>";
+            }
+        }
+
+        if(document.getElementById('inputCPF')){
+            if(document.getElementById('inputCPF').value != ''){
+                cont++;
+            }else{
+                document.getElementById('inputcpfcnpj').innerHTML = "<h5 style='color:red;''>O campo está vazio</h5>";
+            }
+        }
+
+        if(document.getElementById('nomepessoa').value != ''){
             cont++;
         }
 
-        if(document.getElementById()){
+        if(document.getElementById('fonepessoa').value != ''){
+            cont++;
+        }
+
+        if(document.getElementById('emailpessoa').value != ''){
             cont++;
         }
         
-        if(document.getElementById()){
+        if(document.getElementById('ceppessoa').value != ''){
             cont++;
         }
 
-        if(document.getElementById()){
+        if(document.getElementById('enderecopessoa').value != ''){
             cont++;
         }
 
-        if(document.getElementById()){
+        if(document.getElementById('obspessoa').value != ''){
             cont++;
         }
-
-        if(document.getElementById()){
+        if(document.getElementById('senhapessoa').value == document.getElementById('confsenhapessoa').value && document.getElementById('senhapessoa').value != '' && document.getElementById('confsenhapessoa').value != ''){
             cont++;
-        }
-
-        if(document.getElementById()){
-            cont++;
+        }else{
+            document.getElementById('senhas').innerHTML = "<h5 style='color:red;'>Senhas não estão iguais!</h5>";
         }
 
         alert(cont);
 
-        if(cont == 9){
+        if(cont === 8){
             alert(cont);
             this.submit();
         }
