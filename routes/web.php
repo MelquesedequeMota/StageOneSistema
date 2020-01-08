@@ -37,6 +37,22 @@ Route::get('consultamovimentacoes', 'MovimentacaoController@consultaMovimentacao
 Route::get('index', 'Index@Index')->name('index');
 
 Route::get('/', function(){
+    phpinfo();
+});
+
+Route::get('/home', function(){
     return view('home');
 });
 
+Route::get('/produtos', function(){
+    return view('produtos');
+});
+
+Route::get('/add-produtos', function(){
+    return view('addprodutos');
+});
+
+
+Route::get('/movimentacoes', function(){
+    return view('movimentacoes');
+});
