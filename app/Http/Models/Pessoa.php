@@ -18,8 +18,8 @@ class Pessoa extends Model
         'fone2pessoa',
         'fone3pessoa',
         'fone4pessoa',
-        'clientepessoa',
-        'fornecedorpessoa',
+        'tipoconta',
+        'permissaoconta',
         'obspessoa',
         'senhapessoa'
     ];

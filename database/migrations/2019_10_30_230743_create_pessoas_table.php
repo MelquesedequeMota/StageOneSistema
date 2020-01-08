@@ -20,13 +20,13 @@ class CreatePessoasTable extends Migration
             $table->string('ceppessoa')->unique();
             $table->string('emailpessoa')->unique();
             $table->string('enderecopessoa');
-            $table->integer('fonepessoa');
-            $table->integer('fone2pessoa')->nullable();
-            $table->integer('fone3pessoa')->nullable();
-            $table->integer('fone4pessoa')->nullable();
-            $table->string('obspessoa');
+            $table->string('fonepessoa');
+            $table->string('fone2pessoa')->nullable();
+            $table->string('fone3pessoa')->nullable();
+            $table->string('fone4pessoa')->nullable();
+            $table->string('obspessoa')->nullable();
             $table->integer('tipoconta');
-            $table->integer('permissaoconta');
+            $table->string('permissaoconta');
             $table->string('senhapessoa');
 
         });
