@@ -10,6 +10,7 @@ class EstoqueController extends Controller
 {
 
     public function montarLote(Request $request){
+        $unidadeatual = 3;
 
         if($request->session()->get('conf') == 1){
             $conf = 1;
@@ -21,7 +22,7 @@ class EstoqueController extends Controller
         $produtos = DB::table('produtos')->get();
         $cores = DB::table('cores')->get();
         $tamanhos = DB::table('tamanhos')->get();
-        $unidades = DB::table('unidades')->get();
+        $unidades = DB::table('unidades')->where('idunidade', '!=', $unidadeatual)->get();
         $estoques = DB::table('produtos')->get();
 
         $estoque = DB::table('produtos')
@@ -29,6 +30,7 @@ class EstoqueController extends Controller
             ->join('unidades', 'produtos.local', '=', 'unidades.idunidade')
             ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
             ->select('produtos.nomeproduto', 'produtos.quantidade', 'produtos.idproduto', 'tamanhos.nometamanho', 'cores.nomecor', 'unidades.nomeunidade')
+            ->where('unidades.idunidade', '=', $unidadeatual)
             ->get();
 
         return view('montarlote', [
@@ -39,8 +41,150 @@ class EstoqueController extends Controller
         ]);
     }
 
+    public function adicionarEstoque(Request $request){
+
+        if($request->session()->get('conf') == 1){
+            $conf = 1;
+            $request->session()->forget('conf');
+        }else{
+            $conf = 0;
+        }
+
+        if($request->input('adicionarestoque')){
+            $unidadeatual = 1;
+            
+            $nomeunidade = DB::table('unidades')
+            ->where('idunidade', $unidadeatual)
+            ->first();
+
+            for($contador = 0; $contador < count($request->quantidade); $contador++){
+
+                $pesquisa = DB::table('produtos')
+                ->where('idproduto', $request->input('produtos')[$contador])
+                ->get();
+
+                foreach($pesquisa as $pesquisa){
+
+                    $estoquepesquisa = DB::table('produtos')
+                        ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
+                        ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
+                        ->select('produtos.nomeproduto', 'produtos.local','tamanhos.nometamanho', 'cores.nomecor', 'produtos.quantidade', 'produtos.idproduto')
+                        ->where('produtos.idproduto', $request->input('produtos')[$contador])
+                        ->first();
+                
+                    $adicionarbanco = DB::table('produtos')
+                    ->where('idproduto', $request->input('produtos')[$contador])
+                    ->update(['quantidade' => $pesquisa->quantidade + $request->input('quantidade')[$contador]]);
+
+                        $movimentoatt = DB::table('movimentacoes')->insert(
+                            [
+                             'idproduto' => $request->input('produtos')[$contador],
+                             'datamovimentacao' => date('d/m/Y'),
+                             'usuariomovimentacao' => 'admin',
+                             'nomeunidademovimentacao' => $nomeunidade->nomeunidade,
+                             'lotemovimentacao' => $unidadeatual,
+                             'obsmovimentacao' => 'Adicionado "'.$request->input('quantidade')[$contador].'" item(s) do produto "'.$estoquepesquisa->nomeproduto.' '. $estoquepesquisa->nomecor.' ('. $estoquepesquisa->nometamanho.')" Para a Unidade '.$nomeunidade->nomeunidade,
+                             ]
+                        );
+                    }
+                }
+            if($movimentoatt && $adicionarbanco){
+                $conf = 1;
+            }
+        }
+
+        $produtos = DB::table('produtos')->get();
+        $cores = DB::table('cores')->get();
+        $tamanhos = DB::table('tamanhos')->get();
+        $estoques = DB::table('produtos')->get();
+
+        $estoque = DB::table('produtos')
+            ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
+            ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
+            ->select('produtos.nomeproduto', 'produtos.quantidade', 'produtos.idproduto', 'tamanhos.nometamanho', 'cores.nomecor')
+            ->get();
+
+        return view('adicionarEstoque', [
+            'conf' => $conf,
+            'estoque' => $estoque,
+            'estoque2' => $estoque,
+        ]);
+    }
 
 
+    public function retirarEstoque(Request $request){
+
+        if($request->session()->get('conf') == 1){
+            $conf = 1;
+            $request->session()->forget('conf');
+        }else{
+            $conf = 0;
+        }
+
+        if($request->input('retirarestoque')){
+            $unidadeatual = 1;
+            
+            $nomeunidade = DB::table('unidades')
+            ->where('idunidade', $unidadeatual)
+            ->first();
+
+            for($contador = 0; $contador < count($request->quantidade); $contador++){
+
+                $pesquisa = DB::table('produtos')
+                ->where('idproduto', $request->input('produtos')[$contador])
+                ->get();
+
+                foreach($pesquisa as $pesquisa){
+
+                    $estoquepesquisa = DB::table('produtos')
+                        ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
+                        ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
+                        ->select('produtos.nomeproduto', 'produtos.local','tamanhos.nometamanho', 'cores.nomecor', 'produtos.quantidade', 'produtos.idproduto')
+                        ->where('produtos.idproduto', $request->input('produtos')[$contador])
+                        ->first();
+                    
+                    if($pesquisa->quantidade - $request->input('quantidade')[$contador] >=0){
+                        $retirarbanco = DB::table('produtos')
+                    ->where('idproduto', $request->input('produtos')[$contador])
+                    ->update(['quantidade' => $pesquisa->quantidade - $request->input('quantidade')[$contador]]);
+
+                            $movimentoatt = DB::table('movimentacoes')->insert(
+                                [
+                                'idproduto' => $request->input('produtos')[$contador],
+                                'datamovimentacao' => date('d/m/Y'),
+                                'usuariomovimentacao' => 'admin',
+                                'nomeunidademovimentacao' => $nomeunidade->nomeunidade,
+                                'lotemovimentacao' => $unidadeatual,
+                                'obsmovimentacao' => 'Retirado "'.$request->input('quantidade')[$contador].'" item(s) do produto "'.$estoquepesquisa->nomeproduto.' '. $estoquepesquisa->nomecor.' ('. $estoquepesquisa->nometamanho.')" da Unidade '.$nomeunidade->nomeunidade,
+                                ]
+                            );
+                        }else{
+                            $conf = 2;
+                        }
+                    }
+                }
+            if(@$movimentoatt && @$retirarbanco){
+                $conf = 1;
+            }
+        }
+
+        $produtos = DB::table('produtos')->get();
+        $cores = DB::table('cores')->get();
+        $tamanhos = DB::table('tamanhos')->get();
+        $estoques = DB::table('produtos')->get();
+
+        $estoque = DB::table('produtos')
+            ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
+            ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
+            ->select('produtos.nomeproduto', 'produtos.quantidade', 'produtos.idproduto', 'tamanhos.nometamanho', 'cores.nomecor')
+            ->get();
+
+        return view('retirarEstoque', [
+            'conf' => $conf,
+            'estoque' => $estoque,
+            'estoque2' => $estoque,
+        ]);
+    }
 
     public function retiradaLote(Request $request){
 
@@ -60,6 +204,8 @@ class EstoqueController extends Controller
         
         if($request->input('acao') == 'retirarEstoque'){
 
+            $unidadeatual = 1;
+
             for($contador = 0; $contador < count($request->quantidade); $contador++){
 
                 $pesquisa = DB::table('produtos')
@@ -78,9 +224,8 @@ class EstoqueController extends Controller
                     $retirarbanco = DB::table('produtos')
                     ->where('idproduto', $request->input('produtos')[$contador])
                     ->update(['quantidade' => $pesquisa->quantidade - $request->input('quantidade')[$contador]]);
-                    
 
-                    
+                    if($pesquisa->quantidade - $request->input('quantidade')[$contador] >=0){
 
                     foreach($estoquepesquisa as $estoquepesquisa){
 
@@ -94,7 +239,7 @@ class EstoqueController extends Controller
                              'datamovimentacao' => date('d/m/Y'),
                              'usuariomovimentacao' => 'admin',
                              'nomeunidademovimentacao' => $nomeunidade->nomeunidade,
-                             'lotemovimentacao' => $request->input('unidademudanca'),
+                             'lotemovimentacao' => $unidadeatual,
                              'obsmovimentacao' => 'Retirada de "'.$request->input('quantidade')[$contador].'" item(s) do produto "'.$estoquepesquisa->nomeproduto.' '. $estoquepesquisa->nomecor.' ('. $estoquepesquisa->nometamanho.')" Para o Lote '.$loteatual,
                              ]
                         );
@@ -104,14 +249,15 @@ class EstoqueController extends Controller
                          'numerolote' => $loteatual,
                          'idproduto' => $estoquepesquisa->idproduto,
                          'quantidadelote' => $request->input('quantidade')[$contador],
-                         'destinolote' => $request->input('unidademudanca'),
+                         'destinolote' => $unidadeatual,
                          ]
                     );
                     
 
                     }
-
-
+                }else{
+                    $conf = 2;
+                }
                     
                 }
 
@@ -119,7 +265,7 @@ class EstoqueController extends Controller
 
             
 
-            if($movimentoatt && $retirarbanco){
+            if(@$movimentoatt && @$retirarbanco){
                 $conf = 1;
                 $nomeproduto = [];
                 $nometamanho = [];
@@ -142,20 +288,20 @@ class EstoqueController extends Controller
 
                         $destinolote = DB::table('unidades')
                         ->select('nomeunidade')
-                        ->where('idunidade', $request->input('unidademudanca'))
+                        ->where('idunidade', $unidadeatual)
                         ->first();
                 }
             }
 
         }
         return view('qrcode', [
-            'destinolote' => $destinolote->nomeunidade,
+            'destinolote' => @$destinolote->nomeunidade,
             'loteatual' => $loteatual,
-            'nomeproduto' => $nomeproduto,
-            'nometamanho' => $nometamanho,
-            'nomecor' => $nomecor,
-            'quantidadetr' => $quantidadetr,
-            'contador' => $contador - 1,
+            'nomeproduto' => @$nomeproduto,
+            'nometamanho' => @$nometamanho,
+            'nomecor' => @$nomecor,
+            'quantidadetr' => @$quantidadetr,
+            'contador' => @$contador - 1,
             'conf' => $conf
         ]);
     }

@@ -36,6 +36,25 @@ class PessoaController extends Controller
 
         return view('cadastropessoa',['conf'=>$conf]);
     }
+    public function login(Request $request){
+        $conf = 0;
+        if($request->input('logar')){
+            $pessoalogin = DB::table('pessoas')
+            ->where('cpfcnpjpessoa', $request->input('cpfcnpjpessoa'))
+            ->where('senhapessoa', $request->input('senhapessoa'))
+            ->first();
+            if(count($pessoalogin) != 0){
+                $request->session()->put('cpfcnpjpessoa', $request->input('cpfcnpjpessoa'));
+                $request->session()->put('nomepessoa', $request->input('cpfcnpjpessoa'));
+                return redirect('index');
+            }else{
+                $conf = 2;
+            }
+        }
+        return view('login', [
+            'conf' => $conf,
+        ]);
+    }
 }
         
         

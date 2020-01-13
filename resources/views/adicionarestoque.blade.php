@@ -7,31 +7,23 @@
 <body>
 
 @if($conf == 1)
-<script type='text/javascript'> alert('Lote recebido com Sucesso!'); </script>
+<script type='text/javascript'> alert('Produtos adicionados com sucesso!');</script>
 @endif
 
-@if($conf == 2)
-<script type='text/javascript'> alert('Erro! Houve uma tentativa de retirar uma quantidade acima da que o estoque possui!'); </script>
-@endif
+<button onclick="adicionaLinha('adicionar')">Adicionar</button>
 
-<button onclick="adicionaLinha('retirar')">Adicionar</button>
-
-    <form method="get" action="{{route('retiradalote')}}" id='formretirar' name='retirarestoque'>
-        <table border='1px' id='retirar'>
+    <form method="get" action="{{route('adicionarestoque')}}" id='formadicionar' name='adicionarestoque'>
+        <table border='1px' id='adicionar'>
         <tr>
             <th>Produto do Estoque</th>
             <th>Quantidade no Estoque</th>
-            <th>Quantidade à Retirar</th>
+            <th>Quantidade Adicionada</th>
             <th>Remover Linha</th>
         </tr>
         
         </table>
-        
-        <input type='hidden' name='acao' value='retirarEstoque'>
 
-        Para: <select name='unidademudanca'><option value = ''>--Selecione Uma Unidade--</option>@foreach($unidades as $unidade)<option value='{{$unidade->idunidade}}'>{{$unidade->nomeunidade}}</option>@endforeach</select>
-
-        <input type='submit' value='Montar o Lote'>
+        <input type='submit' value='Adicionar ao Estoque' name='adicionarestoque'>
     </form>
 </body>
 </html>
@@ -39,7 +31,7 @@
 <script>
     var contlinhas = 0;
     var linhas = [];
-    adicionaLinha('retirar');
+    adicionaLinha('adicionar');
     function adicionaLinha(idTabela) {
         contlinhas++;
         linhas.push(contlinhas);
@@ -52,7 +44,7 @@
         var celula4 = linha.insertCell(3); 
         celula1.innerHTML = "<select name='produtos[]' id='"+contlinhas+"' onchange='rodar(this)'><option value=''>Selecione um Produto</option>@foreach($estoque as $estoque)@if($estoque->quantidade > 0)<option value='{{$estoque->idproduto}}'>{{$estoque->nomeproduto}} {{$estoque->nomecor}} ({{$estoque->nometamanho}})</option>@endif @endforeach</select>"; 
         celula2.innerHTML =  "<div id='quantidade"+contlinhas+"'></div>"; 
-        celula3.innerHTML =  "<div id='qtdretirar"+contlinhas+"'></div>";
+        celula3.innerHTML =  "<div id='qtdadicionar"+contlinhas+"'></div>";
         celula4.innerHTML =  "<button onclick='removeLinha(this)' id='"+contlinhas+"'>Remover</button>";
         
     }
@@ -60,7 +52,7 @@
     // funcao remove uma linha da tabela
     function removeLinha(linha) {
         var i=linha.parentNode.parentNode.rowIndex;
-        document.getElementById('retirar').deleteRow(i);
+        document.getElementById('adicionar').deleteRow(i);
         linhas.splice(linha.id -1, 1);
         
     }
@@ -76,7 +68,7 @@
         @endforeach
 
         document.getElementById('quantidade'+esse.id).innerHTML = "<p align='center'> "+ quantidade +" </p>";
-        document.getElementById('qtdretirar'+esse.id).innerHTML = "<input type='number'name='quantidade[]' min='1' max='"+quantidade+"' value='1'>";
+        document.getElementById('qtdadicionar'+esse.id).innerHTML = "<input type='number'name='quantidade[]' min='1' value='1'>";
     }
 
 </script>

@@ -26,6 +26,7 @@ class CreatePessoasTable extends Migration
             $table->string('fone4pessoa')->nullable();
             $table->string('obspessoa')->nullable();
             $table->integer('tipoconta');
+            $table->integer('vendedorid')->nullable();
             $table->string('permissaoconta');
             $table->string('senhapessoa');
 

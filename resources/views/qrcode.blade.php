@@ -11,6 +11,20 @@
 <script type='text/javascript'> alert('Lote Gerado com Sucesso!'); </script>
 @endif
 
+@if($conf == 2)
+<script type='text/javascript'>
+function retornar(msg, callback){
+    alert(msg);
+    callback(1);
+}
+retornar('Erro! Houve uma tentativa de retirar uma quantidade acima da que o estoque possui!', function(num){
+    if(num == 1){
+        window.location.href = "http://127.0.0.1:8000/montarlote";
+    }
+});
+</script>
+@endif
+
 <img src='https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=127.0.0.1:8000/receberlote/{{$loteatual}}'><br>
 Número do Lote: {{$loteatual}}<br>
 Items transportados no lote:<br>

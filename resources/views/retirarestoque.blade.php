@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,31 +8,23 @@
 <body>
 
 @if($conf == 1)
-<script type='text/javascript'> alert('Lote recebido com Sucesso!'); </script>
-@endif
-
-@if($conf == 2)
-<script type='text/javascript'> alert('Erro! Houve uma tentativa de retirar uma quantidade acima da que o estoque possui!'); </script>
+<script type='text/javascript'> alert('Produtos retirados com sucesso!');</script>
 @endif
 
 <button onclick="adicionaLinha('retirar')">Adicionar</button>
 
-    <form method="get" action="{{route('retiradalote')}}" id='formretirar' name='retirarestoque'>
+    <form method="get" action="{{route('retirarestoque')}}" id='formretirar' name='retirarestoque'>
         <table border='1px' id='retirar'>
         <tr>
             <th>Produto do Estoque</th>
             <th>Quantidade no Estoque</th>
-            <th>Quantidade à Retirar</th>
+            <th>Quantidade Retirada</th>
             <th>Remover Linha</th>
         </tr>
         
         </table>
-        
-        <input type='hidden' name='acao' value='retirarEstoque'>
 
-        Para: <select name='unidademudanca'><option value = ''>--Selecione Uma Unidade--</option>@foreach($unidades as $unidade)<option value='{{$unidade->idunidade}}'>{{$unidade->nomeunidade}}</option>@endforeach</select>
-
-        <input type='submit' value='Montar o Lote'>
+        <input type='submit' value='Retirar ao Estoque' name='retirarestoque'>
     </form>
 </body>
 </html>

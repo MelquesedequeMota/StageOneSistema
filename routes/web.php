@@ -14,6 +14,10 @@
 Route::get('criarproduto', 'ProdutoController@criarProduto')->name('criarproduto');
 Route::post('criarproduto/post', 'ProdutoController@criarProdutoPost')->name('criarproduto.post');
 
+Route::get('adicionarestoque', 'EstoqueController@adicionarEstoque')->name('adicionarestoque');
+
+Route::get('retirarestoque', 'EstoqueController@retirarEstoque')->name('retirarestoque');
+
 Route::get('criarpessoa', 'PessoaController@criarPessoa')->name('criarpessoa');
 
 Route::get('montarlote', 'EstoqueController@montarLote')->name('montarlote');
@@ -35,6 +39,8 @@ Route::get('consultaestoque', 'EstoqueController@consultaEstoque')->name('consul
 Route::get('consultamovimentacoes', 'MovimentacaoController@consultaMovimentacao')->name('consultamovimentacoes');
 
 Route::get('index', 'Index@Index')->name('index');
+
+Route::get('login', 'PessoaController@login')->name('login');
 
 Route::get('/', function(){
     phpinfo();
