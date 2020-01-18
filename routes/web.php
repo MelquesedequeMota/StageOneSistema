@@ -42,17 +42,17 @@ Route::get('/', function(){
 
 Route::get('/home', function(){
     return view('home');
-});
+})->name('home');
 
 Route::get('/produtos', function(){
     return view('produtos');
-});
+})->name('produtos');
 
 Route::get('/add-produtos', function(){
     return view('addprodutos');
-});
+})->name('addprodutos');
 
 
 Route::get('/movimentacoes', function(){
     return view('movimentacoes');
-});
+})->name('movimentacoes');
