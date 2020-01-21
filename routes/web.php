@@ -20,7 +20,7 @@ Route::get('montarlote', 'EstoqueController@montarLote')->name('montarlote');
 
 Route::get('retiradalote', 'EstoqueController@retiradaLote')->name('retiradalote');
 
-Route::get('pdv', 'PDVController@abrirCaixa')->name('abrircaixa');
+Route::get('pdvmelque', 'PDVController@abrirCaixa')->name('abrircaixa');
 
 Route::get('fecharcaixa', 'PDVController@fecharCaixa')->name('fecharcaixa');
 
@@ -41,18 +41,23 @@ Route::get('/', function(){
 });
 
 Route::get('/home', function(){
-    return view('home');
-})->name('home');
+    return view('ControleDeEstoque.home');
+})->name('ControleDeEstoque.home');
 
 Route::get('/produtos', function(){
-    return view('produtos');
-})->name('produtos');
+    return view('ControleDeEstoque.produtos');
+})->name('ControleDeEstoque.produtos');
 
 Route::get('/add-produtos', function(){
-    return view('addprodutos');
-})->name('addprodutos');
+    return view('ControleDeEstoque.addprodutos');
+})->name('ControleDeEstoque.addprodutos');
 
 
 Route::get('/movimentacoes', function(){
-    return view('movimentacoes');
-})->name('movimentacoes');
+    return view('ControleDeEstoque.movimentacoes');
+})->name('ControleDeEstoque.movimentacoes');
+
+
+Route::get('/pdv', function(){
+    return view('ControleDeEstoque.pdv');
+})->name('ControleDeEstoque.pdv');

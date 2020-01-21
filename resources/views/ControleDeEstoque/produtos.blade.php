@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="lista-conteudo">
-	<div class="p-2 d-flex flex-row justify-content-between align-content-center">
+	<div class="d-flex flex-row justify-content-between align-content-center">
 		<div class="titulo">Produtos</div>
 		<div class="barraPesquisa">
 			<input type="text" class="form-control tamanhoBarra" placeholder="Pesquisar produto" aria-label="Pesquisar produto">

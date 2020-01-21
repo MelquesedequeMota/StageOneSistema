@@ -1,3 +1,4 @@
+
 <html>
     <head>
         <title>@yield('title')</title>
@@ -10,11 +11,11 @@
     </head>
     <body>
         <div class="w-100 bg-secondary fixed-top">
-        	<div class="w-100 d-flex flex-row justify-content-between">
-        		<div class="p-3">
-        			<img src="imagens/teste.png" width="60%">
-	        	</div>
-	        	<div class="w-75 d-flex flex-row align-content-center justify-content-end">
+            <div class="w-100 d-flex flex-row justify-content-between">
+                <div class="p-3">
+                    <img src="imagens/teste.png" width="60%">
+                </div>
+                <div class="w-75 d-flex flex-row align-content-center justify-content-end">
                     <div class="btnMenuSuperior align-self-center">
                         <i class="iconeBtbnSuperior fas fa-bell" style="color: black"></i>     
                     </div>
@@ -29,35 +30,35 @@
                         <i class="fas fa-2x fa-bars" style=" color: black"></i>     
                     </div>
 
-	        	</div>
-        	</div>
+                </div>
+            </div>
         </div>
 
         <div class="inicio-conteudo">
             @yield('content')
         </div>
 
-        <div class="w-100 bg-secondary fixed-bottom d-flex flex-row" style="height: 10%">
+        <div id="menuInferior" class="w-100 bg-secondary fixed-bottom d-flex flex-row" style="height: 10%">
 
-    		<a id="btnHome" href="{{ route('home') }}" class="btnMenuInferior align-self-center">
+            <a id="btnHome" href="{{ route('ControleDeEstoque.home') }}" class="btnMenuInferior align-self-center">
                 <div class="w-50 centralizar"  style="margin-top: 2rem">
                     <i class="iconeBtbnInferior fas fa-home" style="color: black"></i>     
                 </div> 
             </a>
 
-            <a id="btnProdutos" href="{{ route('produtos') }}" class="btnMenuInferior align-self-center">
+            <a id="btnProdutos" href="{{ route('ControleDeEstoque.produtos') }}" class="btnMenuInferior align-self-center">
                 <div class="w-50 centralizar"  style="margin-top: 2rem">
                     <i class="iconeBtbnInferior fas fa-boxes" style="color: black"></i>     
                 </div> 
             </a>
 
-            <a id="btnMovimentacoes" href="{{ route('movimentacoes') }}" class="btnMenuInferior align-self-center">
+            <a id="btnMovimentacoes" href="{{ route('ControleDeEstoque.movimentacoes') }}" class="btnMenuInferior align-self-center">
                 <div class="w-50 centralizar"  style="margin-top: 2rem">
                     <i class="iconeBtbnInferior fas fa-retweet" style="color: black"></i>     
                 </div> 
             </a>
 
-            <a id="btnPDV" href="#" class="btnMenuInferior align-self-center">
+            <a id="btnPDV" href="{{ route('ControleDeEstoque.pdv') }}" class="btnMenuInferior align-self-center">
                 <div class="w-50 centralizar" style="margin-top: 2rem">
                     <i class="iconeBtbnInferior fas fa-pager" style="color: black"></i>     
                 </div> 
@@ -83,8 +84,8 @@
                 $('#btnMovimentacoes i').attr('style', 'color: #6c757d')
                 break
             case 'Ponto de Venda':
-                $('#btnPDV').attr('style', 'background-color: #343a40')
-                $('#btnPDV i').attr('style', 'color: #6c757d')
+                $('#menuInferior').removeClass('d-flex').addClass('d-none')
+                $('.inicio-conteudo').removeClass('inicio-conteudo')
                 break
         }
 
