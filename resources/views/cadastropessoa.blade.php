@@ -13,6 +13,18 @@
     </script>
     @endif
 
+    @if($conf == 2)
+    <script type='text/javascript'>
+        alert('Não foi possível conectar ao servidor, tente novamente!');
+    </script>
+    @endif
+
+    @if($mensagemerro != '')
+    <script type='text/javascript'>
+        alert({{$mensagemerro}});
+    </script>
+    @endif
+
     <form method="get" action="{{route('criarpessoa')}}" onsubmit="return false;" id='criarpessoa'>
         <h3>Obrigatório(*)</h3><br>
         Nome:</div><input type="text" name="nomepessoa" id='nomepessoa' required>(*)<br>

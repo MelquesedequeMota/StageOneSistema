@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1> UGA UGA UGA </h1>
+    <h1>UGA UGA UGA /h1>
     <img src='imagens/uga.jpg'>
 </body>
 </html>
