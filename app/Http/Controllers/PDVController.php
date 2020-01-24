@@ -16,7 +16,7 @@ class PDVController extends Controller
     }
 
     public function finalizarCompraPDV(Request $request){
-
+        
         date_default_timezone_set('America/Sao_Paulo');
 
         $resultado = [];

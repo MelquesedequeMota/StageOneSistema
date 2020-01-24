@@ -30,6 +30,10 @@ Route::get('fecharcaixa', 'PDVController@fecharCaixa')->name('fecharcaixa');
 
 Route::get('buscaritem', 'PDVController@buscarItemPDV')->name('buscaritem');
 
+Route::get('buscarcpfcnpj', 'PessoaController@buscarCPFCNPJ')->name('buscarcpfcnpj');
+
+Route::get('testeread', 'PessoaController@testeread')->name('testeread');
+
 Route::get('finalizarcompra', 'PDVController@finalizarCompraPDV')->name('finalizarcompra');
 
 Route::get('receberlote/{numerolote}', 'EstoqueController@receberLote')->name('receberlote');

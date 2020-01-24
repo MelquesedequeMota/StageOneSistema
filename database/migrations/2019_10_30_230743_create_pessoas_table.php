@@ -17,7 +17,7 @@ class CreatePessoasTable extends Migration
             $table->bigIncrements('idpessoa');
             $table->string('nomepessoa')->unique();
             $table->string('cpfcnpjpessoa')->unique();
-            $table->string('ceppessoa')->unique();
+            $table->string('ceppessoa');
             $table->string('emailpessoa')->unique();
             $table->string('enderecopessoa');
             $table->string('fonepessoa');

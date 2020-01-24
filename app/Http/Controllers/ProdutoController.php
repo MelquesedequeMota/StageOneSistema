@@ -12,6 +12,7 @@ class ProdutoController extends Controller
 {
 
     public function criarProduto(Request $request){
+        $cpfcnpjpessoa = $request->session()->get('cpfcnpjpessoa');
     if($request->session()->get('conf') == 1){
         $conf = 1;
         $request->session()->forget('conf');
@@ -19,11 +20,11 @@ class ProdutoController extends Controller
         $conf = 0;
     }
 
-    $categorias = DB::table('categorias')->get();
-    $produtos = DB::table('produtos')->get();
-    $cores = DB::table('cores')->get();
-    $tamanhos = DB::table('tamanhos')->get();
-    $unidades = DB::table('unidades')->get();
+    $categorias = DB::connection('c'.$cpfcnpjpessoa)->table('categorias')->get();
+    $produtos = DB::connection('c'.$cpfcnpjpessoa)->table('produtos')->get();
+    $cores = DB::connection('c'.$cpfcnpjpessoa)->table('cores')->get();
+    $tamanhos = DB::connection('c'.$cpfcnpjpessoa)->table('tamanhos')->get();
+    $unidades = DB::connection('c'.$cpfcnpjpessoa)->table('unidades')->get();
 
     return view('cadastroproduto',
     ['conf'=>$conf,

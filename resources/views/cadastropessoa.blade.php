@@ -9,7 +9,7 @@
 <body>
     @if($conf == 1)
     <script type='text/javascript'>
-        alert('Pessoa Cadastrado com Sucesso!');
+        alert('Cadastro Realizado com Sucesso!');
     </script>
     @endif
 
@@ -21,7 +21,7 @@
 
     @if($mensagemerro != '')
     <script type='text/javascript'>
-        alert({{$mensagemerro}});
+        alert('{{$mensagemerro}}');
     </script>
     @endif
 
@@ -251,22 +251,35 @@
 
         valor = valor.replace(/[^0-9]/g, '');
 
-        if (valida === 'CPF') {
-            return valida_cpf(valor);
-        } else if (valida === 'CNPJ') {
-            var cnpjj = _cnpj(valor);
-            if (cnpjj == true) {
-                document.getElementById('inputcpfcnpj').innerHTML = "<h5 style='color:green;''>CNPJ Correto!</h5>";
-                verifcpfcnpj = 1;
-            } else {
-                document.getElementById('inputcpfcnpj').innerHTML = "<h5 style='color:red;''>CNPJ Incorreto!</h5>";
-                verifcpfcnpj = 0;
+        $.ajax({
+            type: "GET",
+            url: "/buscarcpfcnpj/",
+            data: {cpfcnpjpessoa: valor},
+            dataType: "json",
+            success: function(data) {
+                if(data == 1){
+                    document.getElementById('inputcpfcnpj').innerHTML = "<h5 style='color:red;'>CPF/CNPJ já cadastrado no sistema!</h5>";
+                }else{
+                    if (valida === 'CPF') {
+                    return valida_cpf(valor);
+                    } else if (valida === 'CNPJ') {
+                        var cnpjj = _cnpj(valor);
+                        if (cnpjj == true) {
+                            document.getElementById('inputcpfcnpj').innerHTML = "<h5 style='color:green;''>CNPJ Correto!</h5>";
+                            verifcpfcnpj = 1;
+                        } else {
+                            document.getElementById('inputcpfcnpj').innerHTML = "<h5 style='color:red;''>CNPJ Incorreto!</h5>";
+                            verifcpfcnpj = 0;
+                        }
+                    } else {
+                        document.getElementById('inputcpfcnpj').innerHTML = "<h5 style='color:red;'>Quantidade de Dígitos Incorreto!</h5>";
+                    }
+                }
             }
-        } else {
-            document.getElementById('cpfcnpj').innerHTML = "<h5 style='color:red;'>Quantidade de Dígitos Incorreto!</h5>";
+        });
+
         }
 
-    }
 
     function _cnpj(cnpj) {
 

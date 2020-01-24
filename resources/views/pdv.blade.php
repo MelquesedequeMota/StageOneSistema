@@ -23,7 +23,7 @@
 
     <input type='text' name='eanproduto' id='eanproduto'>
 
-    <input type='button' name='fds' onclick='imprimir()' value='imprimir'>
+    <input type='button' name='fds' onclick='pesquisar()' value='Pesquisar'>
     <input type='button' name='fds2' onclick='cancelarCompra()' value='Cancelar Compra'>
     <input type='button' name='fds3' onclick='fecharCaixa()' value='Fechar Caixa'>
 
@@ -33,8 +33,8 @@
             <th>Id do Produto</th>
             <th>Nome do Produto</th>
             <th>Quantidade do Produto</th>
-            <th>Preço Varejo</th>
-            <th>Preço Atacado</th>
+            <th>Preço Unidade</th>
+            <th>Valor Total</th>
             <th>Remover Produto</th>
         </tr>
     </table>
@@ -119,13 +119,14 @@ atualizarSubtotal();
 
         if(checar == 1){
             produtos[indice][2]++;
-            document.getElementById("quantidadeproduto["+produtos[indice][0]+"]").innerHTML = produtos[indice][2];
+            calcularTotalProduto(indice, produtos[indice][2]);
+            document.getElementById("valortotal["+produtos[indice][0]+"]").innerHTML = 'R$'+produtos[indice][4];
             document.getElementById("imagemproduto").src = "{{ URL::to('/imagens') }}/"+data.img;
             atualizarSubtotal();
 
         }else{
 
-            produtos.push([data.idproduto, data.nomeproduto, 1, data.valvareproduto, data.valatacproduto, data.quantidadeatacproduto]);
+            produtos.push([data.idproduto, data.nomeproduto, 1, data.valvareproduto, data.valvareproduto, data.quantidadeatacproduto]);
 
             numprodutos.push(contlinhas);
 
@@ -144,9 +145,9 @@ atualizarSubtotal();
             var celula6 = linha.insertCell(5); 
             celula1.innerHTML = produtos[produtos.length - 1][0]; 
             celula2.innerHTML = produtos[produtos.length - 1][1]; 
-            celula3.innerHTML = "<div id='quantidadeproduto["+produtos[produtos.length - 1][0]+"]'>"+ produtos[produtos.length - 1][2] +"</div>";
+            celula3.innerHTML = "<input type='number' id='quantidadeproduto["+produtos[produtos.length - 1][0]+"]' value='"+ produtos[produtos.length - 1][2] +"' onchange='calcularTotalProduto(this, null)'>";
             celula4.innerHTML = "R$"+produtos[produtos.length - 1][3];
-            celula5.innerHTML = "R$"+produtos[produtos.length - 1][4];
+            celula5.innerHTML = "<div id = 'valortotal["+produtos[produtos.length - 1][0]+"]'>R$"+produtos[produtos.length - 1][4]+"</div>";
             celula6.innerHTML = "<input type='button' value='Remover' onclick='cancelarItem(this)' id='"+contlinhas+"'>";
             atualizarSubtotal();
 
@@ -177,7 +178,7 @@ atualizarSubtotal();
 
     function calcularSubtotal(numproduto){
         
-        subtotal = subtotal + (produtos[numproduto][2] * produtos[numproduto][3]);
+        subtotal = subtotal + produtos[numproduto][4];
 
     }
 
@@ -257,6 +258,27 @@ atualizarSubtotal();
 
         document.getElementById('total').innerHTML= 'R$' + total;
 
+    }
+
+    function calcularTotalProduto(indice,quantidade){
+        var att ='';
+        alert(quantidade);
+        if(quantidade == null){
+            var idproduto = indice.id.replace(/\D/g, '');
+            var quantidadeproduto = indice.value;
+        }else{
+            var idproduto = indice;
+            var quantidadeproduto = quantidade;
+        }
+        for(var cont = 0; cont < produtos.length; cont++){
+            if(produtos[cont][0] == idproduto){
+                att = cont;
+            }
+        }
+
+        produtos[att][4] = produtos[att][3] * quantidadeproduto;
+        document.getElementById("valortotal["+idproduto+"]").innerHTML = 'R$ ' + produtos[att][4];
+        atualizarSubtotal();
     }
 
     function fecharCaixa(){
