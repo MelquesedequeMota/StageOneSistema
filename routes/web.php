@@ -61,3 +61,8 @@ Route::get('/movimentacoes', function(){
 Route::get('/pdv', function(){
     return view('ControleDeEstoque.pdv');
 })->name('ControleDeEstoque.pdv');
+
+
+Route::get('/montarLotesss', function(){
+    return view('ControleDeEstoque.montarLote');
+})->name('ControleDeEstoque.montarLote');

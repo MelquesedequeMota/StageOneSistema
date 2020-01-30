@@ -9,9 +9,21 @@
 		<div style="height: 8.5%"></div>
 		<input type="text" name="codigoProduto" placeholder="Código do Produto" class="codigoInput">
 		<div class="produtoSelecionado">
-			<div class="excluirProduto">X</div>
+			<button type="button" class="excluirProduto">X</button>
 			<img src="imagens/63.jpeg" width="30%" height="85%" class="align-self-center" style="object-fit: cover">
-			<h3>Nome do produto</h3>
+			<div class="infoProdutoSelect">
+				<div class="w-75">
+					<h1>Leite Ninho</h1>
+					<h3>Código: T4LT4L</h3>
+					<h3>Valor unitário: R$ <span id="valorUni">10.00</span></h3>
+					<h3>Valor total: R$ <span id="valorTotal">100.00</span></h3>
+				</div>
+				<div class="escolheQtd">
+					<button type="button" id="menosQtd" class="btnQtd">-</button>
+					<span id="valorQtd" class="valorQtd">10</span>
+					<button type="button" id="maisQtd" class="btnQtd">+</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	
@@ -73,4 +85,27 @@
 
 @section('js')
 
+<script type="text/javascript">
+
+	let valorUni = parseInt($('#valorUni').text())
+
+	console.log((4).toFixed(2))
+	$('#menosQtd').click( function(){
+
+		if(parseInt($('#valorQtd').text()) > 0)
+			$('#valorQtd').text(parseInt($('#valorQtd').text())-1)
+
+
+		$('#valorTotal').text((valorUni * parseInt($('#valorQtd').text())).toFixed(2))
+	}); 
+
+	$('#maisQtd').click( function(){
+
+		$('#valorQtd').text(parseInt($('#valorQtd').text())+1)
+
+
+		$('#valorTotal').text((valorUni * parseInt($('#valorQtd').text())).toFixed(2))
+	}); 
+
+</script>
 @endsection

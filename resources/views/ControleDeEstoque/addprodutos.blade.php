@@ -1,4 +1,4 @@
-@extends('master')
+@extends('ControleDeEstoque\master')
 
 @section('title', 'Adicionar Produto')
 

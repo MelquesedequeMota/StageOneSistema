@@ -16,7 +16,7 @@
                     <img src="imagens/teste.png" width="60%">
                 </div>
                 <div class="w-75 d-flex flex-row align-content-center justify-content-end">
-                    <div class="btnMenuSuperior align-self-center">
+                    <!-- <div class="btnMenuSuperior align-self-center">
                         <i class="iconeBtbnSuperior fas fa-bell" style="color: black"></i>     
                     </div>
 
@@ -25,7 +25,7 @@
                              <div class="alertBtn"></div>
                         </i>     
                     </div>
-
+ -->
                     <div class="btnMenuSuperior mr-3 align-self-center">
                         <i class="fas fa-2x fa-bars" style=" color: black"></i>     
                     </div>
