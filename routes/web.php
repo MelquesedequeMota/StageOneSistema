@@ -28,7 +28,11 @@ Route::get('pdv', 'PDVController@abrirCaixa')->name('abrircaixa');
 
 Route::get('fecharcaixa', 'PDVController@fecharCaixa')->name('fecharcaixa');
 
-Route::get('buscaritem', 'PDVController@buscarItemPDV')->name('buscaritem');
+Route::get('adicionaritem', 'PDVController@adicionarItemPDV')->name('adicionaritem');
+
+Route::get('pesquisarproduto', 'PDVController@pesquisarProdutoPDV')->name('pesquisarproduto');
+
+Route::get('enviarsugestao', 'IndexController@enviarSugestao')->name('enviarsugestao');
 
 Route::get('buscarcpfcnpj', 'PessoaController@buscarCPFCNPJ')->name('buscarcpfcnpj');
 
@@ -42,7 +46,7 @@ Route::get('consultaestoque', 'EstoqueController@consultaEstoque')->name('consul
 
 Route::get('consultamovimentacoes', 'MovimentacaoController@consultaMovimentacao')->name('consultamovimentacoes');
 
-Route::get('index', 'Index@Index')->name('index');
+Route::get('index', 'IndexController@Index')->name('index');
 
 Route::get('login', 'PessoaController@login')->name('login');
 

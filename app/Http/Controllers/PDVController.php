@@ -8,11 +8,31 @@ use Illuminate\Support\Facades\DB;
 class PDVController extends Controller
 {
 
-    public function buscarItemPDV(Request $request){
+    public function adicionarItemPDV(Request $request){
         $produto = DB::table('produtos')
         ->where('ean', $request->codigo)
         ->first();
         return json_encode($produto);
+    }
+
+    public function pesquisarProdutoPDV(Request $request){
+        $produtop =array(array());
+        $cont = 0;
+        $produtos = DB::table('produtos')
+        ->where('nomeproduto', 'like', '%'.$request->nomeproduto.'%')
+        ->get();
+        foreach($produtos as $produtos){
+            $produtop[$cont][0] = $produtos->ean;
+            $produtop[$cont][1] = $produtos->nomeproduto;
+            $produtop[$cont][2] = 1;
+            $produtop[$cont][3] = $produtos->valvareproduto;
+            $produtop[$cont][4] = $produtos->valatacproduto;
+            $produtop[$cont][5] = $produtos->quantidadeatacproduto;
+            $produtop[$cont][6] = $produtos->idproduto;
+            $produtop[$cont][7] = $produtos->quantidade;
+            $cont++;
+        }
+        return $produtop;
     }
 
     public function finalizarCompraPDV(Request $request){
