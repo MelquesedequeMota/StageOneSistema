@@ -186,7 +186,7 @@ class PessoaController extends Controller
             ->where('senhapessoa', $request->input('senhapessoa'))
             ->first();
             if($pessoalogin != null){
-                $request->session()->put('cpfcnpjpessoa', preg_replace("/[^0-9]/", "", $request->input('cpfcnpjpessoa')));
+                $request->session()->put('cpfcnpjpessoa', preg_replace("/[^0-9]/", "", (string) $request->input('cpfcnpjpessoa')));
                 $request->session()->put('nomepessoa', $pessoalogin->nomepessoa);
                 return redirect('index');
             }else{

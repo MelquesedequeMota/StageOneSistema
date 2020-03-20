@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\DB;
 class IndexController extends Controller
 {
     public function Index(){
-        return view('index');
+        $teste= DB::connection('tenant')->table('unidades')->first();
+        return view('index',['teste' => $teste]);
     }
 
     public function enviarSugestao(Request $request){

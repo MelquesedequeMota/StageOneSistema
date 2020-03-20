@@ -1,20 +1,20 @@
 <?php
 namespace App\Http\Middleware;
-use App\Models\Empresa;
-use App\Support\Controller\TenantConnector;
+use App\Http\Models\Pessoas;
+use App\Support\TenantConnector;
 use Closure;
 class Tenant {
     use TenantConnector;
     /**
-     * @var Empresa
+     * @var pessoas
      */
-    protected $Empresa;
+    protected $pessoas;
     /**
      * Tenant constructor.
-     * @param Empresa $empresa
+     * @param pessoas $pessoas
      */
-    public function __construct(empresa $empresa) {
-        $this->empresa = $empresa;
+    public function __construct(pessoas $pessoas) {
+        $this->pessoas = $pessoas;
     }
     /**
      * Trata a requisição
@@ -24,13 +24,13 @@ class Tenant {
      * @return mixed
      */
     public function handle($request, Closure $next) {
-        if (($request->session()->get('tenant')) === null)
-            return redirect()->route('home')->withErrors(['error' => __('Você não selecionou nenhum cliente.')]);
-        // Busca a empresa pelo id armazenado na sessão
-        $empresa = $this->empresa->find($request->session()->get('tenant'));
-        // Conecta no banco escolhido e colocar a variavel $empresa na sessão
-        $this->reconnect($empresa);
-        $request->session()->put('empresa', $empresa);
+        if (($request->session()->get('cpfcnpjpessoa')) === null)
+            return redirect()->route('login');
+        // Busca a pessoas pelo id armazenado na sessão
+        $pessoas = $this->pessoas->find($request->session()->get('cpfcnpjpessoa'));
+        // Conecta no banco escolhido e colocar a variavel $pessoas na sessão
+        $this->reconnect($pessoas);
+        $request->session()->put('pessoas', $pessoas);
         return $next($request);
     }
 }

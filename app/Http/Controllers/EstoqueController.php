@@ -19,13 +19,13 @@ class EstoqueController extends Controller
             $conf = 0;
         }
 
-        $produtos = DB::table('produtos')->get();
-        $cores = DB::table('cores')->get();
-        $tamanhos = DB::table('tamanhos')->get();
-        $unidades = DB::table('unidades')->where('idunidade', '!=', $unidadeatual)->get();
-        $estoques = DB::table('produtos')->get();
+        $produtos = DB::connection('tenant')->table('produtos')->get();
+        $cores = DB::connection('tenant')->table('cores')->get();
+        $tamanhos = DB::connection('tenant')->table('tamanhos')->get();
+        $unidades = DB::connection('tenant')->table('unidades')->where('idunidade', '!=', $unidadeatual)->get();
+        $estoques = DB::connection('tenant')->table('produtos')->get();
 
-        $estoque = DB::table('produtos')
+        $estoque = DB::connection('tenant')->table('produtos')
             ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
             ->join('unidades', 'produtos.local', '=', 'unidades.idunidade')
             ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
@@ -53,30 +53,30 @@ class EstoqueController extends Controller
         if($request->input('adicionarestoque')){
             $unidadeatual = 1;
             
-            $nomeunidade = DB::table('unidades')
+            $nomeunidade = DB::connection('tenant')->table('unidades')
             ->where('idunidade', $unidadeatual)
             ->first();
 
             for($contador = 0; $contador < count($request->quantidade); $contador++){
 
-                $pesquisa = DB::table('produtos')
+                $pesquisa = DB::connection('tenant')->table('produtos')
                 ->where('idproduto', $request->input('produtos')[$contador])
                 ->get();
 
                 foreach($pesquisa as $pesquisa){
 
-                    $estoquepesquisa = DB::table('produtos')
+                    $estoquepesquisa = DB::connection('tenant')->table('produtos')
                         ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
                         ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
                         ->select('produtos.nomeproduto', 'produtos.local','tamanhos.nometamanho', 'cores.nomecor', 'produtos.quantidade', 'produtos.idproduto')
                         ->where('produtos.idproduto', $request->input('produtos')[$contador])
                         ->first();
                 
-                    $adicionarbanco = DB::table('produtos')
+                    $adicionarbanco = DB::connection('tenant')->table('produtos')
                     ->where('idproduto', $request->input('produtos')[$contador])
                     ->update(['quantidade' => $pesquisa->quantidade + $request->input('quantidade')[$contador]]);
 
-                        $movimentoatt = DB::table('movimentacoes')->insert(
+                        $movimentoatt = DB::connection('tenant')->table('movimentacoes')->insert(
                             [
                              'idproduto' => $request->input('produtos')[$contador],
                              'datamovimentacao' => date('d/m/Y'),
@@ -93,12 +93,12 @@ class EstoqueController extends Controller
             }
         }
 
-        $produtos = DB::table('produtos')->get();
-        $cores = DB::table('cores')->get();
-        $tamanhos = DB::table('tamanhos')->get();
-        $estoques = DB::table('produtos')->get();
+        $produtos = DB::connection('tenant')->table('produtos')->get();
+        $cores = DB::connection('tenant')->table('cores')->get();
+        $tamanhos = DB::connection('tenant')->table('tamanhos')->get();
+        $estoques = DB::connection('tenant')->table('produtos')->get();
 
-        $estoque = DB::table('produtos')
+        $estoque = DB::connection('tenant')->table('produtos')
             ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
             ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
             ->select('produtos.nomeproduto', 'produtos.quantidade', 'produtos.idproduto', 'tamanhos.nometamanho', 'cores.nomecor')
@@ -124,19 +124,19 @@ class EstoqueController extends Controller
         if($request->input('retirarestoque')){
             $unidadeatual = 1;
             
-            $nomeunidade = DB::table('unidades')
+            $nomeunidade = DB::connection('tenant')->table('unidades')
             ->where('idunidade', $unidadeatual)
             ->first();
 
             for($contador = 0; $contador < count($request->quantidade); $contador++){
 
-                $pesquisa = DB::table('produtos')
+                $pesquisa = DB::connection('tenant')->table('produtos')
                 ->where('idproduto', $request->input('produtos')[$contador])
                 ->get();
 
                 foreach($pesquisa as $pesquisa){
 
-                    $estoquepesquisa = DB::table('produtos')
+                    $estoquepesquisa = DB::connection('tenant')->table('produtos')
                         ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
                         ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
                         ->select('produtos.nomeproduto', 'produtos.local','tamanhos.nometamanho', 'cores.nomecor', 'produtos.quantidade', 'produtos.idproduto')
@@ -144,11 +144,11 @@ class EstoqueController extends Controller
                         ->first();
                     
                     if($pesquisa->quantidade - $request->input('quantidade')[$contador] >=0){
-                        $retirarbanco = DB::table('produtos')
+                        $retirarbanco = DB::connection('tenant')->table('produtos')
                     ->where('idproduto', $request->input('produtos')[$contador])
                     ->update(['quantidade' => $pesquisa->quantidade - $request->input('quantidade')[$contador]]);
 
-                            $movimentoatt = DB::table('movimentacoes')->insert(
+                            $movimentoatt = DB::connection('tenant')->table('movimentacoes')->insert(
                                 [
                                 'idproduto' => $request->input('produtos')[$contador],
                                 'datamovimentacao' => date('d/m/Y'),
@@ -168,12 +168,12 @@ class EstoqueController extends Controller
             }
         }
 
-        $produtos = DB::table('produtos')->get();
-        $cores = DB::table('cores')->get();
-        $tamanhos = DB::table('tamanhos')->get();
-        $estoques = DB::table('produtos')->get();
+        $produtos = DB::connection('tenant')->table('produtos')->get();
+        $cores = DB::connection('tenant')->table('cores')->get();
+        $tamanhos = DB::connection('tenant')->table('tamanhos')->get();
+        $estoques = DB::connection('tenant')->table('produtos')->get();
 
-        $estoque = DB::table('produtos')
+        $estoque = DB::connection('tenant')->table('produtos')
             ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
             ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
             ->select('produtos.nomeproduto', 'produtos.quantidade', 'produtos.idproduto', 'tamanhos.nometamanho', 'cores.nomecor')
@@ -190,7 +190,7 @@ class EstoqueController extends Controller
 
         $conf = 0;
         
-        $loteatual = DB::table('lotes')->select('numerolote')->latest('numerolote')->first();
+        $loteatual = DB::connection('tenant')->table('lotes')->select('numerolote')->latest('numerolote')->first();
 
         if($loteatual == ''){
             $loteatual = 1;
@@ -208,20 +208,20 @@ class EstoqueController extends Controller
 
             for($contador = 0; $contador < count($request->quantidade); $contador++){
 
-                $pesquisa = DB::table('produtos')
+                $pesquisa = DB::connection('tenant')->table('produtos')
                 ->where('idproduto', $request->input('produtos')[$contador])
                 ->get();
 
                 foreach($pesquisa as $pesquisa){
 
-                    $estoquepesquisa = DB::table('produtos')
+                    $estoquepesquisa = DB::connection('tenant')->table('produtos')
                         ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
                         ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
                         ->select('produtos.nomeproduto', 'produtos.local','tamanhos.nometamanho', 'cores.nomecor', 'produtos.quantidade', 'produtos.idproduto')
                         ->where('produtos.idproduto', $request->input('produtos')[$contador])
                         ->get();
                 
-                    $retirarbanco = DB::table('produtos')
+                    $retirarbanco = DB::connection('tenant')->table('produtos')
                     ->where('idproduto', $request->input('produtos')[$contador])
                     ->update(['quantidade' => $pesquisa->quantidade - $request->input('quantidade')[$contador]]);
 
@@ -229,11 +229,11 @@ class EstoqueController extends Controller
 
                     foreach($estoquepesquisa as $estoquepesquisa){
 
-                        $nomeunidade = DB::table('unidades')
+                        $nomeunidade = DB::connection('tenant')->table('unidades')
                         ->where('idunidade', $estoquepesquisa->local)
                         ->first();
 
-                        $movimentoatt = DB::table('movimentacoes')->insert(
+                        $movimentoatt = DB::connection('tenant')->table('movimentacoes')->insert(
                             [
                              'idproduto' => $request->input('produtos')[$contador],
                              'datamovimentacao' => date('d/m/Y'),
@@ -244,7 +244,7 @@ class EstoqueController extends Controller
                              ]
                         );
                         
-                        $loteatt = DB::table('lotes')->insert(
+                        $loteatt = DB::connection('tenant')->table('lotes')->insert(
                         [
                          'numerolote' => $loteatual,
                          'idproduto' => $estoquepesquisa->idproduto,
@@ -272,9 +272,9 @@ class EstoqueController extends Controller
                 $nomecor = [];
                 $quantidadetr = [];
                 $contador = 0;
-                $pesquisaloteatual = DB::table('lotes')->where('numerolote', $loteatual)->get();
+                $pesquisaloteatual = DB::connection('tenant')->table('lotes')->where('numerolote', $loteatual)->get();
                 foreach($pesquisaloteatual as $pesquisaloteatual){
-                    $pesquisaestoqueatual = DB::table('produtos')
+                    $pesquisaestoqueatual = DB::connection('tenant')->table('produtos')
                         ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
                         ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
                         ->select('produtos.nomeproduto', 'produtos.quantidade', 'produtos.idproduto', 'tamanhos.nometamanho', 'cores.nomecor')
@@ -286,7 +286,7 @@ class EstoqueController extends Controller
                         array_push($quantidadetr, $request->input('quantidade')[$contador]);
                         $contador++;
 
-                        $destinolote = DB::table('unidades')
+                        $destinolote = DB::connection('tenant')->table('unidades')
                         ->select('nomeunidade')
                         ->where('idunidade', $unidadeatual)
                         ->first();
@@ -317,13 +317,13 @@ class EstoqueController extends Controller
         
         if($request->input('acao') == 'confirmar'){
 
-            $lotereceber = DB::table('lotes')->where('numerolote', $numerolote)->get();
+            $lotereceber = DB::connection('tenant')->table('lotes')->where('numerolote', $numerolote)->get();
 
                 foreach($lotereceber as $lotereceber){
                     $destinolote = $lotereceber->destinolote;
                     $numerolote = $lotereceber->numerolote;
 
-                    $estoqueatual = DB::table('produtos')
+                    $estoqueatual = DB::connection('tenant')->table('produtos')
                         ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
                         ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
                         ->where('produtos.idproduto', $lotereceber->idproduto)
@@ -331,11 +331,11 @@ class EstoqueController extends Controller
 
                     foreach($estoqueatual as $estoqueatual){
 
-                        $nomeunidade = DB::table('unidades')
+                        $nomeunidade = DB::connection('tenant')->table('unidades')
                         ->where('idunidade', $destinolote)
                         ->first();
 
-                        $movimentoatt = DB::table('movimentacoes')->insert(
+                        $movimentoatt = DB::connection('tenant')->table('movimentacoes')->insert(
                             [
                              'idproduto' => $lotereceber->idproduto,
                              'datamovimentacao' => date('d/m/Y'),
@@ -346,7 +346,7 @@ class EstoqueController extends Controller
                              ]
                         );
 
-                        $checar = DB::table('produtos')
+                        $checar = DB::connection('tenant')->table('produtos')
                         ->join('unidades', 'produtos.local', '=', 'unidades.idunidade')
                         ->where('produtos.idproduto' , $estoqueatual->idproduto)
                         ->where('produtos.idcor' , $estoqueatual->idcor)
@@ -356,11 +356,11 @@ class EstoqueController extends Controller
 
                         if($checar){
 
-                            $inserirestoque = DB::table('produtos')->where('idproduto', $checar->idproduto)->update(['quantidade' => $checar->quantidade + $lotereceber->quantidadelote]);
+                            $inserirestoque = DB::connection('tenant')->table('produtos')->where('idproduto', $checar->idproduto)->update(['quantidade' => $checar->quantidade + $lotereceber->quantidadelote]);
                             
 
                         }else{
-                            $inserirestoque = DB::table('produtos')->insert(
+                            $inserirestoque = DB::connection('tenant')->table('produtos')->insert(
                                 [
 
                                     'nomeproduto' => $estoqueatual->nomeproduto,
@@ -396,7 +396,7 @@ class EstoqueController extends Controller
 
                     for($i = 0; $i<=$contador-1; $i++){
 
-                        $estoqueatual = DB::table('produtos')
+                        $estoqueatual = DB::connection('tenant')->table('produtos')
                         ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
                         ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
                         ->where('produtos.idproduto', $request->input('produtosad')[$i])
@@ -404,7 +404,7 @@ class EstoqueController extends Controller
 
                     foreach($estoqueatual as $estoqueatual){
 
-                        $movimentoatt = DB::table('movimentacoes')->insert(
+                        $movimentoatt = DB::connection('tenant')->table('movimentacoes')->insert(
                             [
                              'idproduto' => $estoqueatual->idproduto,
                              'datamovimentacao' => date('d/m/Y'),
@@ -415,7 +415,7 @@ class EstoqueController extends Controller
                              ]
                         );
 
-                        $checar = DB::table('produtos')
+                        $checar = DB::connection('tenant')->table('produtos')
                         ->join('unidades', 'produtos.local', '=', 'unidades.idunidade')
                         ->where('produtos.idproduto' , $estoqueatual->idproduto)
                         ->where('produtos.idcor' , $estoqueatual->idcor)
@@ -425,11 +425,11 @@ class EstoqueController extends Controller
 
                         if($checar){
 
-                            $inserirestoque = DB::table('produtos')->where('idproduto', $checar->idproduto)->update(['quantidade' => $checar->quantidade + $request->input('quantidadead')[$i]]);
+                            $inserirestoque = DB::connection('tenant')->table('produtos')->where('idproduto', $checar->idproduto)->update(['quantidade' => $checar->quantidade + $request->input('quantidadead')[$i]]);
                             
 
                         }else{
-                            $inserirestoque = DB::table('estoques')->insert(
+                            $inserirestoque = DB::connection('tenant')->table('estoques')->insert(
                                 [
 
                                     'nomeproduto' => $estoqueatual->nomeproduto,
@@ -469,7 +469,7 @@ class EstoqueController extends Controller
 
         }else{
 
-            $lotereceber = DB::table('lotes')->where('numerolote', $numerolote)->get();
+            $lotereceber = DB::connection('tenant')->table('lotes')->where('numerolote', $numerolote)->get();
             $idproduto = [];
             $nomeproduto = [];
             $nometamanho = [];
@@ -478,7 +478,7 @@ class EstoqueController extends Controller
 
             foreach($lotereceber as $lotereceber){
 
-                $estoque = DB::table('produtos')
+                $estoque = DB::connection('tenant')->table('produtos')
                 ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
                 ->join('unidades', 'produtos.local', '=', 'unidades.idunidade')
                 ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
@@ -494,7 +494,7 @@ class EstoqueController extends Controller
 
             }
             
-            $estoque = DB::table('produtos')
+            $estoque = DB::connection('tenant')->table('produtos')
             ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
             ->join('unidades', 'produtos.local', '=', 'unidades.idunidade')
             ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
@@ -528,7 +528,7 @@ class EstoqueController extends Controller
 
                 $valores = [$request->nomeproduto,$request->corproduto,$request->tamanhoproduto, $request->nomeunidade];
 
-                $estoque = DB::table('produtos')
+                $estoque = DB::connection('tenant')->table('produtos')
                     ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
                     ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
                     ->join('unidades', 'produtos.local', '=', 'unidades.idunidade')
@@ -541,13 +541,12 @@ class EstoqueController extends Controller
 
             }else{
 
-                $estoque = DB::table('produtos')
+                $estoque = DB::connection('tenant')->table('produtos')
                     ->join('tamanhos', 'produtos.idtamanho', '=', 'tamanhos.idtamanho')
                     ->join('cores', 'produtos.idcor', '=', 'cores.idcor')
                     ->join('unidades', 'produtos.local', '=', 'unidades.idunidade')
                     ->select('produtos.nomeproduto','produtos.estqminproduto',  'produtos.quantidade', 'produtos.img', 'tamanhos.nometamanho', 'cores.nomecor', 'unidades.nomeunidade')
                     ->get();
-
             }
             return view('consultaestoque', [
                 'estoque' => $estoque,
@@ -556,8 +555,42 @@ class EstoqueController extends Controller
 
     }
 
+    public function criarUnidade(Request $request){
+        $conf = 0;
+        if($request->input('criarunidade')){
+            $criarunidade = DB::connection('tenant')
+            ->table('unidades')
+            ->insert([
+                    'cpfcnpjunidade' => preg_replace("/[^0-9]/", "", $request->input('cpfcnpjunidade')),
+                    'nomeunidade' => $request->input('nomeunidade'),
+                    ]);
+            if($criarunidade){
+                $conf = 1;
+                return view('criarunidade',[
+                    'conf' => $conf,
+                ]);
+            }else{
+                $conf = 2;
+                return view('criarunidade',[
+                    'conf' => $conf,
+                ]);
+            }
+        }
 
+        
 
+        return view('criarunidade',[
+            'conf' => $conf,
+        ]);
+    }
 
+    public function buscarCPFCNPJUnidade(Request $request){
+        $pesquisa = DB::connection('tenant')
+        ->table('unidades')
+        ->select('cpfcnpjunidade')
+        ->where('cpfcnpjunidade', '=', $request->cpfcnpjunidade)
+        ->get();
+        return count($pesquisa);
+      }
     
 }

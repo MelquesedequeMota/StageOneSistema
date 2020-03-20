@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Estoque extends Model
 {
     protected $primarykey = 'idestoque';
+    protected $connection = 'tenant';
     protected $fillable = [
         'idestoque',
         'local',

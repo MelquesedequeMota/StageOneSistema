@@ -47,7 +47,7 @@
         Estoque Inicial: <input type="text" name="quantidade" required>(*)<br>
         Valor Varejo: <input type="text" name="valvareproduto" required>(*)<br>
         Valor Atacado: <input type="text" name="valatacproduto"><br>
-        Desconto Produto<input type="text" name="descontoproduto" required>(*)<br>
+        Quantidade Atacado<input type="text" name="quantidadeatacproduto" required>(*)<br>
         Código NCM: <input type="text" name="ncmcodproduto"><br>
         Descrição NCM: <input type="text" name="ncmdescproduto"><br>
         Código EAN: <input type="text" name="eancodproduto"><br>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lote extends Model
 {
     protected $primarykey = 'idlote';
+    protected $connection = 'tenant';
     protected $fillable = [
         'idlote',
         'numerolote',

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Produtos extends Model
 {
     protected $primarykey = 'idproduto';
+    protected $connection = 'tenant';
     protected $fillable = [
         'idproduto',
         'nomeproduto',

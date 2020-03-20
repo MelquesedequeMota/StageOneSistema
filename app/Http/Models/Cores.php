@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cores extends Model
 {
     protected $primarykey = 'idcor';
+    protected $connection = 'tenant';
     protected $fillable = [
         'idcor',
         'nomecor'

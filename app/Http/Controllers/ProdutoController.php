@@ -20,11 +20,11 @@ class ProdutoController extends Controller
         $conf = 0;
     }
 
-    $categorias = DB::connection('c'.$cpfcnpjpessoa)->table('categorias')->get();
-    $produtos = DB::connection('c'.$cpfcnpjpessoa)->table('produtos')->get();
-    $cores = DB::connection('c'.$cpfcnpjpessoa)->table('cores')->get();
-    $tamanhos = DB::connection('c'.$cpfcnpjpessoa)->table('tamanhos')->get();
-    $unidades = DB::connection('c'.$cpfcnpjpessoa)->table('unidades')->get();
+    $categorias = DB::connection('tenant')->table('categorias')->get();
+    $produtos = DB::connection('tenant')->table('produtos')->get();
+    $cores = DB::connection('tenant')->table('cores')->get();
+    $tamanhos = DB::connection('tenant')->table('tamanhos')->get();
+    $unidades = DB::connection('tenant')->table('unidades')->get();
 
     return view('cadastroproduto',
     ['conf'=>$conf,
@@ -45,7 +45,7 @@ class ProdutoController extends Controller
         $ref = '';
         $wms = '';
 
-        $categorias = DB::table('categorias')->get();
+        $categorias = DB::connection('tenant')->table('categorias')->get();
 
         if($request->input('criar')){
 
@@ -61,7 +61,7 @@ class ProdutoController extends Controller
             $produtos->estqminproduto = $request->input('estqminproduto');
             $produtos->valatacproduto = $request->input('valatacproduto');
             $produtos->valvareproduto = $request->input('valvareproduto');
-            $produtos->descontoproduto = $request->input('descontoproduto');
+            $produtos->quantidadeatacproduto = $request->input('quantidadeatacproduto');
             $produtos->ncmcodproduto = $request->input('ncmcodproduto');
             $produtos->ncmdescproduto = $request->input('ncmdescproduto');
             $produtos->unimedproduto = $request->input('unimedproduto');
@@ -70,7 +70,7 @@ class ProdutoController extends Controller
             $produtos->ean = $request->input('eancodproduto');
             $produtos->img = $nomeimagem;
             $produtos->ref = $ref;
-            $produtos->ref = $wms;
+            $produtos->wms = $wms;
             $produtos->quantidade = $request->quantidade;
             $produtos->idproduto = $request->idproduto;
             $produtos->idcor = $request->idcor;
