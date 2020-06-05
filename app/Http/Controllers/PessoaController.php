@@ -118,6 +118,21 @@ class PessoaController extends Controller
                 datavenda varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                 PRIMARY KEY (idvenda)
               )';
+
+              $criartabelas[10] = 'CREATE TABLE descpedidos (
+                iddescpedido int(200) NOT NULL AUTO_INCREMENT,
+                idpedido int(20) NOT NULL,
+                nomeproduto varchar(200) NOT NULL,
+                quantidadeproduto double(20,2) NOT NULL,
+                PRIMARY KEY (iddescpedido)
+              )';
+              $criartabelas[11] = 'CREATE TABLE pedidos (
+                idpedido int(20) NOT NULL AUTO_INCREMENT,
+                nomepedido varchar(200) NOT NULL,
+                datapedido varchar(200) NOT NULL,
+                statuspedido int(1) NOT NULL,
+                PRIMARY KEY (idpedido)
+              )';
               foreach($criartabelas as $criartabelas){
                 if(mysqli_query($link, $criartabelas)){
                   $contcriar++;
@@ -126,7 +141,7 @@ class PessoaController extends Controller
                   mysqli_query($link, 'DROP DATABASE c'.$cpf);
                 }
               }
-              if($contcriar < 10){
+              if($contcriar < 12){
                 $mensagemerro = 'Erro na Criação de Tabelas: ' . @$erro;
               }else{
                 $inserirbasico[0] = "INSERT INTO cores VALUES (01,'Vermelho'),(02,'Azul'),(03,'Violeta'),(04,'Verde'),(05,'Amarelo'),(06,'Branco'),(07,'Preto'),(08,'Rosa'),(09,'Laranja');";

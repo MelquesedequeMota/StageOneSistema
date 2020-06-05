@@ -48,7 +48,12 @@ Route::middleware(['tenant'])->group(function () {
 
     Route::get('index', 'IndexController@Index')->name('index');
 
+    Route::get('consultapedidos', 'PedidosController@consulta')->name('consultapedidos');
+    Route::get('attstatusproduto', 'PedidosController@attStatusProduto')->name('addstatusproduto');
+    Route::get('attstatuspedido', 'PedidosController@attStatusPedido')->name('addstatuspedido');
 
+    Route::get('fazerpedido', 'PedidosController@fazerPedido')->name('fazerpedidos');
+    Route::get('finalizarpedido', 'PedidosController@finalizarPedido')->name('finalizarpedidos');
 });
 
 

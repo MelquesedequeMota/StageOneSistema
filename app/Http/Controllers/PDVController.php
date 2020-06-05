@@ -70,15 +70,15 @@ class PDVController extends Controller
 
         foreach($request->produtos as $produto){
             $produtoatual = DB::connection('tenant')->table('produtos')
-            ->where('idproduto', $produto[0])
+            ->where('idproduto', $produto[6])
             ->first();
-
+            
             $updateestoque = DB::connection('tenant')->table('produtos')
-            ->where('idproduto', $produto[0])
+            ->where('idproduto', $produto[6])
             ->update(['quantidade' => $produtoatual->quantidade - $produto[2]]);
             
             $novovendaobs = DB::connection('tenant')->table('vendaobs')
-            ->insert(['idvenda' => $vendaatual->idvenda, 'idprodutovenda' => $produto[0], 'quantidadevenda' => $produto[2]]);
+            ->insert(['idvenda' => $vendaatual->idvenda, 'idprodutovenda' => $produto[6], 'quantidadevenda' => $produto[2]]);
 
             if($updateestoque && $novovendaobs){
                 $checagem++;

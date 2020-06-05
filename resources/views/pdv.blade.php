@@ -140,7 +140,7 @@ atualizarSubtotal();
         data: {codigo: eanproduto},
         dataType: "json",
         success: function(data) {
-
+            console.log(data);
             if(produtos.length != 0){
 
                     for(var i = 0; i < produtos.length; i++){
